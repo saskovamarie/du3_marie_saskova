@@ -2,7 +2,7 @@ import pathlib, json, sys
 
 def split_json(filepath, points_list, lines_list, polygons_list):
     """
-    funkce projde všechny soubory v zadaném adresáři a jejo podadresářích, vybere všechny soubory geoJSON a podle typu geometrie
+    funkce projde všechny soubory v zadaném adresáři a jeho podadresářích, vybere všechny soubory geoJSON a podle typu geometrie
     rozdělí objekty do seznamů, zároveň ošetřuje výjimky, které mohou nastat
     :param filepath: cesta k vstupnímu adresáři
     :param points_list: seznam bodů
@@ -20,7 +20,7 @@ def split_json(filepath, points_list, lines_list, polygons_list):
                             features = data["features"]
 
                             if len(features) == 0:   # ošetření případu, kdy seznam 'features' je prázdný
-                                print("Error: soubor:", files," neobsahuje žádné objekty!")
+                                print("Error: soubor:", files," neobsahuje objekty!")
                                 continue
 
                             for fts in features:
@@ -43,10 +43,10 @@ def split_json(filepath, points_list, lines_list, polygons_list):
                     split_json(files, points_list, lines_list, polygons_list)   # rekurzivní volání funkce
 
             except ValueError:
-                print("Error: soubor geoJSON:", files, " je poškozený! ")
+                print("Error: soubor:", files, " je poškozený! ")
 
     except FileNotFoundError:
-        print("Error: soubor ", filepath, " neexistuje!")
+        print("Error: adresář ", filepath, " neexistuje!")
 
 
 
@@ -55,8 +55,8 @@ lines = []
 polygons = []
 
 cesta = pathlib.Path(sys.argv[1])
-split_json(cesta, points,lines, polygons)
 
+split_json(cesta, points,lines, polygons)
 try:
     # tvorba json - points
     gj_structure_points = {"type": "FeatureCollection"}
